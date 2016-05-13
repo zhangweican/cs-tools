@@ -82,4 +82,14 @@ public class EnvUtil {
 		String value = StringUtils.join(env.getList(key).iterator(), ",");
 		return value;
 	}
+	/**
+	 * 按照splitStr  拼接，因为有时候，会出现properties value含有逗号。
+	 * @param key
+	 * @param splitStr
+	 * @return
+	 */
+	public static String getValue(String key,String splitStr) {
+		String value = StringUtils.join(env.getList(key).iterator(), splitStr);
+		return value;
+	}
 }
