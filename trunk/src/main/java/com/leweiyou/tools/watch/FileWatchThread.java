@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leweiyou.tools.utils.XUtils;
+import com.leweiyou.tools.utils.Utils;
 
 public abstract class FileWatchThread extends Thread {
 	public static final long DEFAULT_DELAY = 60000L;
@@ -87,7 +87,7 @@ public abstract class FileWatchThread extends Thread {
 
 	public void run() {
 		while (!interrupted) {
-			XUtils.sleep(delay);
+			Utils.sleep(delay);
 			checkAndConfigure();
 		}
 	}
