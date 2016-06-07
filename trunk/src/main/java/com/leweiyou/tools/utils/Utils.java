@@ -2,7 +2,7 @@ package com.leweiyou.tools.utils;
 
 import java.net.URLEncoder;
 
-public class XUtils {
+public class Utils {
 	public static String encodeUrl(String v) {
 		if (v != null) {
 			try {

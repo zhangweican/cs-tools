@@ -50,9 +50,9 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
+import com.leweiyou.tools.file.PropertiesUtils;
 import com.leweiyou.tools.log.Logger;
 import com.leweiyou.tools.utils.IOUtils;
-import com.leweiyou.tools.utils.PropertyUtils;
 
 /**
  * @author zzg {MSN:pingzzg@hotmail.com, QQ:11039850}
@@ -634,7 +634,7 @@ public class HttpUtils {
 			File tmpf = new File(tofile + ".tmp");
 			File inff = new File(tofile + ".tmf");
 
-			Properties p = PropertyUtils.readToProperties(inff);
+			Properties p = PropertiesUtils.readToProperties(inff);
 			long filelength = Long.parseLong(p.getProperty("File-Length", "" + Long.MIN_VALUE));
 
 			long pos = 0;
