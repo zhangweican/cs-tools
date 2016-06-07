@@ -1,7 +1,6 @@
 /*
  * @(#)BeanUtils.java
  *       
- * 系统名称：东航电子商务国内B2C系统
  * 版本号：1.0
  * 
  * Copyright (c)  TravelSky
