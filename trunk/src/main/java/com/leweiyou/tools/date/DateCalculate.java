@@ -353,11 +353,47 @@ public class DateCalculate {
     /**
      * 在日期上增加天
      */
+    public static Date addWeek(Date date, int n) {
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(date);
+    	cal.add(Calendar.DAY_OF_WEEK, n);
+    	return cal.getTime();
+    } 
+    /**
+     * 在日期上增加天
+     */
     public static Date addDay(Date date, int n) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.DAY_OF_MONTH, n);
         return cal.getTime();
+    } 
+    /**
+     * 在日期上增加小时
+     */
+    public static Date addHour(Date date, int n) {
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(date);
+    	cal.add(Calendar.HOUR, n);
+    	return cal.getTime();
+    } 
+    /**
+     * 在日期上增加分钟
+     */
+    public static Date addMinute(Date date, int n) {
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(date);
+    	cal.add(Calendar.MINUTE, n);
+    	return cal.getTime();
+    } 
+    /**
+     * 在日期上增加秒
+     */
+    public static Date addSecond(Date date, int n) {
+    	Calendar cal = Calendar.getInstance();
+    	cal.setTime(date);
+    	cal.add(Calendar.SECOND, n);
+    	return cal.getTime();
     } 
     /**
      * 为航班日期加上 ：
