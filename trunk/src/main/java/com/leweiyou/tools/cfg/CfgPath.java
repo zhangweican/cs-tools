@@ -1,6 +1,24 @@
 package com.leweiyou.tools.cfg;
 
+import java.io.File;
+
+import com.leweiyou.tools.log.Logger;
+
+/**
+ * 配置文件路径读取顺序<br>
+ * 1.读取环境变量cfg.path<br>
+ * 2.如环境变量中不存在，则读取jboss和tomcat的根目录，<br>
+ * 3.如果根目录读取失败，则返回默认的appcfg，否则进入4<br>
+ * 4.判定jboss或tomcat的根目录 + appcfg + 项目具体名称是否存在，如果返回，否则返回jboss或tomcat的根目录 + appcfg 路径<br>
+ * <br>
+ * <br>
+ * 
+ * 其实主要就是配置文件在服务器外面时候，如果多个项目部署在同一个服务器上面，则配置文件放到appcfg + 项目名的目录下，这样区分开来。
+ * @author Zhangweican
+ *
+ */
 public class CfgPath {
+	static Logger logger = new Logger(CfgPath.class);
 	private static String cfgPath=_getCfgPath("cfg.path","appcfg");
 	private static String logPath=_getLogPath("log4j.dir");
 	
@@ -35,6 +53,19 @@ public class CfgPath {
 					path=path+p;
 				}else{
 					path=path+"/"+p;
+				}
+				
+				//获取webapp下具体项目的名称，如果不是webapp项目，则返回空
+				String projectPath = CfgPath.class.getResource("/").getPath();
+				int position = projectPath.indexOf("WEB-INF");
+				if(position != -1){
+					projectPath = projectPath.substring(0,position - 1);
+					position = projectPath.lastIndexOf("/");
+					projectPath = projectPath.substring(position + 1);
+					logger.info("xxxx:" + path + "/" + projectPath);
+					if(new File(path + "/" + projectPath).exists()){
+						path = path + "/" + projectPath;
+					}
 				}
 			}
 		}
