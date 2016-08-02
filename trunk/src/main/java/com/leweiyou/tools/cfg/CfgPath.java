@@ -62,7 +62,7 @@ public class CfgPath {
 					projectPath = projectPath.substring(0,position - 1);
 					position = projectPath.lastIndexOf("/");
 					projectPath = projectPath.substring(position + 1);
-					logger.info("xxxx:" + path + "/" + projectPath);
+					//logger.info("xxxx:" + path + "/" + projectPath);
 					if(new File(path + "/" + projectPath).exists()){
 						path = path + "/" + projectPath;
 					}
