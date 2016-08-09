@@ -42,7 +42,7 @@ import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.log4j.Logger;
 
-public class CommMailManager{
+public class MailManager{
     
 	protected transient final Logger log = Logger.getLogger(this.getClass().getName());
     
@@ -59,7 +59,7 @@ public class CommMailManager{
         email.setHostName(this.getSmtp());
         email.setFrom(this.getSender());
         email.setAuthentication(this.getUsername(), this.getPassword());
-        if (StringUtils.isNotEmpty(receiver))
+        if (StringUtils.isEmpty(receiver))
             email.setTo(this.getRecipients(this.getReceiver()));
         else
             email.setTo(this.getRecipients(receiver));
@@ -99,7 +99,7 @@ public class CommMailManager{
         email.setHostName(this.getSmtp());
         email.setFrom(this.getSender());
         email.setAuthentication(this.getUsername(), this.getPassword());
-        if (StringUtils.isNotEmpty(receiver))
+        if (StringUtils.isEmpty(receiver))
             email.setTo(this.getRecipients(this.getReceiver()));
         else
             email.setTo(this.getRecipients(receiver));
@@ -133,7 +133,7 @@ public class CommMailManager{
         email.setHostName(this.getSmtp());
         email.setFrom(this.getSender());
         email.setAuthentication(this.getUsername(), this.getPassword());
-        if (StringUtils.isNotEmpty(receiver))
+        if (StringUtils.isEmpty(receiver))
             email.setTo(this.getRecipients(this.getReceiver()));
         else
             email.setTo(this.getRecipients(receiver));
@@ -161,7 +161,7 @@ public class CommMailManager{
         email.setHostName(this.getSmtp());
         email.setFrom(this.getSender());
         email.setAuthentication(this.getUsername(), this.getPassword());
-        if (StringUtils.isNotEmpty(receiver))
+        if (StringUtils.isEmpty(receiver))
             email.setTo(this.getRecipients(this.getReceiver()));
         else
             email.setTo(this.getRecipients(receiver));
@@ -212,7 +212,7 @@ public class CommMailManager{
         email.setHostName(this.getSmtp());
         email.setFrom(this.getSender());
         email.setAuthentication(this.getUsername(), this.getPassword());
-        if (StringUtils.isNotEmpty(receiver))
+        if (StringUtils.isEmpty(receiver))
             email.setTo(this.getRecipients(this.getReceiver()));
         else
             email.setTo(this.getRecipients(receiver));
@@ -287,7 +287,7 @@ public class CommMailManager{
         	 email.setFrom(this.getSender());
         }
         email.setAuthentication(this.getUsername(), this.getPassword());
-        if (StringUtils.isNotEmpty(receiver))
+        if (StringUtils.isEmpty(receiver))
             email.setTo(this.getRecipients(this.getReceiver()));
         else
             email.setTo(this.getRecipients(receiver));
@@ -336,7 +336,7 @@ public class CommMailManager{
         	 email.setFrom(this.getSender());
         }
         email.setAuthentication(this.getUsername(), this.getPassword());
-        if (StringUtils.isNotEmpty(receiver))
+        if (StringUtils.isEmpty(receiver))
             email.setTo(this.getRecipients(this.getReceiver()));
         else
             email.setTo(this.getRecipients(receiver));
