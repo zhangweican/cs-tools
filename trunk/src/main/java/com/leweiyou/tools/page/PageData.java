@@ -8,6 +8,11 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Request的页面参数类
+ * @author Zhangweican
+ *
+ */
 public class PageData extends HashMap implements Map{
 	
 	private static final long serialVersionUID = 1L;
@@ -60,6 +65,10 @@ public class PageData extends HashMap implements Map{
 	}
 	
 	public String getString(Object key) {
+		Object o = get(key);
+		if(o == null){
+			return null;
+		}
 		return (String)get(key);
 	}
 	
