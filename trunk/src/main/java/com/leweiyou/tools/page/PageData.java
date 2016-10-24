@@ -1,8 +1,12 @@
 package com.leweiyou.tools.page;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -71,6 +75,39 @@ public class PageData extends HashMap implements Map{
 		}
 		return (String)get(key);
 	}
+	public Integer getInteger(Object key) {
+		Object o = get(key);
+		if(o == null){
+			return null;
+		}
+		return (Integer)get(key);
+	}
+	public Float getFloat(Object key) {
+		Object o = get(key);
+		if(o == null){
+			return null;
+		}
+		return (Float)get(key);
+	}
+	public Double getDouble(Object key) {
+		Object o = get(key);
+		if(o == null){
+			return null;
+		}
+		return (Double)get(key);
+	}
+	public ArrayList getList(Object key) {
+		Object o = get(key);
+		if(o == null){
+			return null;
+		}
+		String[] strs = String.valueOf(o).split(",");
+		ArrayList list = new ArrayList();
+		Collections.addAll(list, strs);
+		return list;
+	}
+	
+	
 	
 	@SuppressWarnings("unchecked")
 	@Override
