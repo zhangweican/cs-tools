@@ -73,28 +73,28 @@ public class PageData extends HashMap implements Map{
 		if(o == null){
 			return null;
 		}
-		return (String)get(key);
+		return String.valueOf(get(key));
 	}
 	public Integer getInteger(Object key) {
 		Object o = get(key);
 		if(o == null){
 			return null;
 		}
-		return (Integer)get(key);
+		return Integer.valueOf(get(key) + "");
 	}
 	public Float getFloat(Object key) {
 		Object o = get(key);
 		if(o == null){
 			return null;
 		}
-		return (Float)get(key);
+		return Float.valueOf(get(key) + "");
 	}
 	public Double getDouble(Object key) {
 		Object o = get(key);
 		if(o == null){
 			return null;
 		}
-		return (Double)get(key);
+		return Double.valueOf(get(key) + "");
 	}
 	public ArrayList getList(Object key) {
 		Object o = get(key);
