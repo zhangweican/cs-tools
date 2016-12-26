@@ -12,6 +12,8 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Request的页面参数类
  * @author Zhangweican
@@ -76,32 +78,32 @@ public class PageData extends HashMap implements Map{
 		return String.valueOf(get(key));
 	}
 	public Integer getInteger(Object key) {
-		Object o = get(key);
-		if(o == null){
+		String str = getString(key);
+		if(StringUtils.isEmpty(str)){
 			return null;
 		}
-		return Integer.valueOf(get(key) + "");
+		return Integer.valueOf(str);
 	}
 	public Float getFloat(Object key) {
-		Object o = get(key);
-		if(o == null){
+		String str = getString(key);
+		if(StringUtils.isEmpty(str)){
 			return null;
 		}
-		return Float.valueOf(get(key) + "");
+		return Float.valueOf(str);
 	}
 	public Double getDouble(Object key) {
-		Object o = get(key);
-		if(o == null){
+		String str = getString(key);
+		if(StringUtils.isEmpty(str)){
 			return null;
 		}
-		return Double.valueOf(get(key) + "");
+		return Double.valueOf(str);
 	}
 	public ArrayList getList(Object key) {
-		Object o = get(key);
-		if(o == null){
+		String str = getString(key);
+		if(StringUtils.isEmpty(str)){
 			return null;
 		}
-		String[] strs = String.valueOf(o).split(",");
+		String[] strs = str.split(",");
 		ArrayList list = new ArrayList();
 		Collections.addAll(list, strs);
 		return list;
