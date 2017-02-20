@@ -112,7 +112,7 @@ public class XmlTools {
 		}
 
 		if (node.getNodeType() == Node.TEXT_NODE) { // 文本类型，输出文本
-			String text = ((Text) node).getWholeText();
+			String text = ((Text) node).getData();
 			text = getMatchValueInContent(text, "\\$\\{(.*?)\\}");
 			node.setNodeValue(text);
 		}
@@ -154,7 +154,7 @@ public class XmlTools {
 			sb_attr = new StringBuffer();
 		}
 		if (node.getNodeType() == Node.TEXT_NODE) { // 文本类型，输出文本
-			String text = ((Text) node).getWholeText();
+			String text = ((Text) node).getData();
 			logger.info(text);
 		}
 

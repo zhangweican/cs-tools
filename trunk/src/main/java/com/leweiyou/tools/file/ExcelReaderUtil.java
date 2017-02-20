@@ -21,118 +21,234 @@
  */
 package com.leweiyou.tools.file;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ExcelReaderUtil{
+public class ExcelReaderUtil {
 
 	/**
-	 * 根据文件名称读取Excel
-	 * 返回：
-	 * 
-	 * @param fileName
-	 * @return　List<String[][]>
+	 * 根据SheetName读取Excel内容
 	 */
-	public List readExcel(String fileName){
-		List datas = new ArrayList ();
-		try {
-			HSSFWorkbook workbook = new HSSFWorkbook(new FileInputStream(fileName));		
-			for(int i=0;i< workbook.getNumberOfSheets();i++){
-				HSSFSheet tableSheet = workbook.getSheetAt(i);
-				if(tableSheet == null) continue ;
-				datas.add(readSheetData(tableSheet));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+	public static List<List<Object>> readExcel(File file,String sheetName) throws IOException {
+		String fileName = file.getName();
+		String extension = fileName.lastIndexOf(".") == -1 ? "" : fileName
+				.substring(fileName.lastIndexOf(".") + 1);
+		if ("xls".equals(extension)) {
+			HSSFSheet sheet = getHSSFSheet(file, sheetName);
+			return read2003Excel(sheet);
+		} else if ("xlsx".equals(extension)) {
+			XSSFSheet sheet = getXSSFSheet(file, sheetName);
+			return read2007Excel(sheet);
+		} else {
+			throw new IOException("不支持的文件类型");
 		}
-		return datas;
 	}
-
 	/**
-	 * 读取每个Sheet
-	 * 
-	 * @param tableSheet
-	 * @return
+	 * 根据SheetAt读取Excel内容
 	 */
-	public String[][] readSheetData(HSSFSheet tableSheet) { 
-		int rows = tableSheet.getPhysicalNumberOfRows();
-		if(rows < 1) return null;
-		
-		HSSFRow tableRow = tableSheet.getRow(0);
-		int columns = tableRow.getPhysicalNumberOfCells();
-		String[][] sheetValues = new String[rows-1][columns];
-		
-		for (int i = 1; i < rows; i++) {
-			HSSFRow row = tableSheet.getRow(i); 
-			for (int j = 0; j < columns; j++) { 
-				HSSFCell cell = row.getCell((short) j); 
-				sheetValues[i-1][j] = getCellValue(cell); 
-			} 	
-		}  
-		return sheetValues;		
-	}
-
-	/**
-	 * 判断单元格的数据类型并将其值转换成String
-	 */
-	public String getCellValue(HSSFCell cell) {
-		try{
-		if (cell != null) {
-			int type = cell.getCellType();
-			switch (type) {
-			case 0:
-				return getTextByNumbericString(cell.getNumericCellValue());
-			case 1:
-				return cell.getStringCellValue();
-			default:
-				return "";
-			}
-		} else
-			return "";
-		}catch(Exception e){
-			e.printStackTrace();
+	public static List<List<Object>> readExcel(File file,int sheetAt) throws IOException {
+		String fileName = file.getName();
+		String extension = fileName.lastIndexOf(".") == -1 ? "" : fileName
+				.substring(fileName.lastIndexOf(".") + 1);
+		if ("xls".equals(extension)) {
+			HSSFSheet sheet = getHSSFSheet(file, sheetAt);
+			return read2003Excel(sheet);
+		} else if ("xlsx".equals(extension)) {
+			XSSFSheet sheet = getXSSFSheet(file, sheetAt);
+			return read2007Excel(sheet);
+		} else {
+			throw new IOException("不支持的文件类型");
 		}
-		return "";
 	}
-	    
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//
-	//////////////////////////////////////////////////////////////////////////////////
-	public String getTextByNumbericString(double numericCellValue){
-		String value = String.valueOf(numericCellValue);
-		int point = value.indexOf(".");
-		int ePost = value.indexOf("E");
-		if(ePost > 0 ){
-			//含有E的科学计数法，出去小数点和E后面的数据
-			value = value.substring(0,ePost);	
-			value = value.substring(0,point) + value.substring(point +1,value.length());
-		}else{
-			//不含有E，取小数点前面的数据
-			if(point > 0) 
-				value = value.substring(0,point);	
-		}			
-		return value;
+	
+	private static HSSFSheet getHSSFSheet(File file,String sheetName) throws IOException{
+		HSSFWorkbook hwb = new HSSFWorkbook(new FileInputStream(file));
+		return hwb.getSheet(sheetName);
+	}
+	private static HSSFSheet getHSSFSheet(File file,int sheetAt) throws IOException{
+		HSSFWorkbook hwb = new HSSFWorkbook(new FileInputStream(file));
+		return hwb.getSheetAt(sheetAt);
+	}
+	private static XSSFSheet getXSSFSheet(File file,String sheetName) throws IOException{
+		XSSFWorkbook hwb = new XSSFWorkbook(new FileInputStream(file));
+		return hwb.getSheet(sheetName);
+	}
+	private static XSSFSheet getXSSFSheet(File file,int sheetAt) throws IOException{
+		XSSFWorkbook hwb = new XSSFWorkbook(new FileInputStream(file));
+		return hwb.getSheetAt(sheetAt);
 	}
 	
 	/**
-	 * 读取EXCEL的首行，得到表头信息并存 放到String数组中
+	 * 读取 office 2003 excel
+	 * 
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 */
+	private static List<List<Object>> read2003Excel(HSSFSheet sheet) throws IOException {
+		if(sheet == null){
+			return null;
+		}
+		List<List<Object>> list = new LinkedList<List<Object>>();
+		Object value = null;
+		HSSFRow row = null;
+		HSSFCell cell = null;
+		for (int i = sheet.getFirstRowNum(); i <= sheet.getPhysicalNumberOfRows(); i++) {
+			row = sheet.getRow(i);
+			if (row == null) {
+				continue;
+			}
+			List<Object> linked = new LinkedList<Object>();
+			for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
+				cell = row.getCell(j);
+				if (cell == null) {
+					continue;
+				}
+				DecimalFormat df = new DecimalFormat("0");// 格式化 number String
+				// 字符
+				SimpleDateFormat sdf = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm:ss");// 格式化日期字符串
+				DecimalFormat nf = new DecimalFormat("0.00");// 格式化数字
+				switch (cell.getCellType()) {
+				case XSSFCell.CELL_TYPE_STRING:
+					// i + "行" + j + " 列 is String type");
+					value = cell.getStringCellValue();
+					break;
+				case XSSFCell.CELL_TYPE_NUMERIC:
+					// i + "行" + j
+					// + " 列 is Number type ; DateFormt:"
+					// + cell.getCellStyle().getDataFormatString());
+					if ("@".equals(cell.getCellStyle().getDataFormatString())) {
+						value = df.format(cell.getNumericCellValue());
+
+					} else if ("General".equals(cell.getCellStyle()
+							.getDataFormatString())) {
+						value = nf.format(cell.getNumericCellValue());
+					} else {
+						value = sdf.format(HSSFDateUtil.getJavaDate(cell
+								.getNumericCellValue()));
+					}
+					break;
+				case XSSFCell.CELL_TYPE_BOOLEAN:
+					// i + "行" + j + " 列 is Boolean type");
+					value = cell.getBooleanCellValue();
+					break;
+				case XSSFCell.CELL_TYPE_BLANK:
+					// i + "行" + j + " 列 is Blank type");
+					value = "";
+					break;
+				default:
+					// i + "行" + j + " 列 is default type");
+					value = cell.toString();
+				}
+				if (value == null || "".equals(value)) {
+					continue;
+				}
+				linked.add(value);
+
+			}
+			list.add(linked);
+		}
+
+		return list;
+	}
+
+	/**
+	 * 读取Office 2007 excel
 	 */
 
-	public String[] getTableHeaderNames(HSSFRow tableRow) {
-		int columns = tableRow.getPhysicalNumberOfCells();
-		String[] tableHeaderNames = new String[columns];
-		for (int i = 0; i < columns; i++) {
-			HSSFCell cell = tableRow.getCell((short) i);
-			tableHeaderNames[i] = cell.getStringCellValue();
+	private static List<List<Object>> read2007Excel(XSSFSheet sheet) throws IOException {
+		if(sheet == null){
+			return null;
 		}
-		return tableHeaderNames;
+		List<List<Object>> list = new LinkedList<List<Object>>();
+		Object value = null;
+		XSSFRow row = null;
+		XSSFCell cell = null;
+		for (int i = sheet.getFirstRowNum(); i <= sheet
+				.getPhysicalNumberOfRows(); i++) {
+			row = sheet.getRow(i);
+			if (row == null) {
+				continue;
+			}
+			List<Object> linked = new LinkedList<Object>();
+			for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
+				cell = row.getCell(j);
+				if (cell == null) {
+					continue;
+				}
+				DecimalFormat df = new DecimalFormat("0");// 格式化 number String
+				// 字符
+				SimpleDateFormat sdf = new SimpleDateFormat(
+						"yyyy-MM-dd HH:mm:ss");// 格式化日期字符串
+				DecimalFormat nf = new DecimalFormat("0.00");// 格式化数字
+
+				switch (cell.getCellType()) {
+				case XSSFCell.CELL_TYPE_STRING:
+					// i + "行" + j + " 列 is String type");
+					value = cell.getStringCellValue();
+					break;
+				case XSSFCell.CELL_TYPE_NUMERIC:
+					// i + "行" + j
+					// + " 列 is Number type ; DateFormt:"
+					// + cell.getCellStyle().getDataFormatString());
+					if ("@".equals(cell.getCellStyle().getDataFormatString())) {
+						value = df.format(cell.getNumericCellValue());
+
+					} else if ("General".equals(cell.getCellStyle()
+							.getDataFormatString())) {
+						value = nf.format(cell.getNumericCellValue());
+					} else {
+						value = sdf.format(HSSFDateUtil.getJavaDate(cell
+								.getNumericCellValue()));
+					}
+					break;
+				case XSSFCell.CELL_TYPE_BOOLEAN:
+					// i + "行" + j + " 列 is Boolean type");
+					value = cell.getBooleanCellValue();
+					break;
+				case XSSFCell.CELL_TYPE_BLANK:
+					// i + "行" + j + " 列 is Blank type");
+					value = "";
+					// value);
+					break;
+				default:
+					// i + "行" + j + " 列 is default type");
+					value = cell.toString();
+				}
+				if (value == null || "".equals(value)) {
+					continue;
+				}
+				linked.add(value);
+			}
+			list.add(linked);
+		}
+		return list;
+	}
+
+	public static void main(String[] args) {
+		List list;
+		try {
+			list = ExcelReaderUtil.readExcel(new File("E:\\document\\项目相关\\IDC华南-广佛带宽机位盘点V3.xls"),1);
+			System.out.println(list.size());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
