@@ -144,9 +144,9 @@ public class ExcelWriteUtil {
 	 *            主体内容
 	 * @throws Exception
 	 */
-	public static void createExcel(String fileName, String title,String[] excelHeads, List excelContents) throws Exception {
+	public static void createExcel(File file, String title,String[] excelHeads, List excelContents) throws Exception {
 		// 验证数据有效性
-		if (fileName == null || "".equals(fileName))
+		if (file == null || file.isDirectory())
 			throw new Exception("error.export.excel.file");
 		if (null == excelHeads || excelHeads.length < 1)
 			throw new Exception("error.export.excel.file");
@@ -164,7 +164,7 @@ public class ExcelWriteUtil {
 
 			createExcelBody(excelHeads,excelContents, sheet);
 
-			createExcelFile(fileName, document);
+			createExcelFile(file, document);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -178,7 +178,7 @@ public class ExcelWriteUtil {
 	 * @param excelHeads
 	 * @param sheet
 	 */
-	public static void creatExcelHeader(String title,String[] headNames, HSSFSheet sheet) { 
+	private static void creatExcelHeader(String title,String[] headNames, HSSFSheet sheet) { 
 		int column = 0;
 		
 		//创建标题
@@ -201,7 +201,7 @@ public class ExcelWriteUtil {
 	 * @param excelContents
 	 * @param sheet
 	 */
-	public static void createExcelBody(String[] voFieldNames,List voList,HSSFSheet sheet) throws Exception{
+	private static void createExcelBody(String[] voFieldNames,List voList,HSSFSheet sheet) throws Exception{
   
 		int row = 2, column = 0; 
 
@@ -232,13 +232,12 @@ public class ExcelWriteUtil {
 	 * @param document
 	 * @throws Exception
 	 */
-	public static void createExcelFile(String fileName, HSSFWorkbook document) throws Exception {
+	private static void createExcelFile(File file, HSSFWorkbook document) throws Exception {
  
-		File file = new File(new PathDetector().getResult() + "/download/" );
 		if(!file.exists()){
-			file.mkdir();
+			file.mkdirs();
 		}
-		fileName = new PathDetector().getResult() + "/download/" + fileName;
+		String fileName = file.getName();
 		
 		File outputFile = null;
 		FileOutputStream fos = null;
