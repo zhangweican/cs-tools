@@ -1,24 +1,3 @@
-/*
- * @(#)ExcelReaderUtil.java
- *       
- * 系统名称：东航电子商务国内B2C系统
- * 版本号：1.0
- * 
- * Copyright (c)  TravelSky
- * All Rights Reserved.
- * 
- * 作者：hujq
- * 创建日期：Oct 29, 2009
- * 
- * 功能描述：读取Excel文件的辅助类
- * 公用方法描述：
- * 
- * 修改人：
- * 修改日期：
- * 修改原因：
- * 
- * 
- */
 package com.leweiyou.tools.file;
 
 import java.io.File;
