@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
@@ -14,6 +15,7 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -24,15 +26,39 @@ public class ExcelReaderUtil {
 	/**
 	 * 根据SheetName读取Excel内容
 	 */
+	public static List<List<Object>> readExcel(boolean isXlsx,InputStream stream,String sheetName) throws IOException {
+		if (!isXlsx) {
+			Sheet sheet = getSheet(false,stream, sheetName);
+			return read2003Excel(sheet);
+		} else {
+			Sheet sheet = getSheet(true,stream, sheetName);
+			return read2007Excel(sheet);
+		}
+	}
+	/**
+	 * 根据SheetName读取Excel内容
+	 */
+	public static List<List<Object>> readExcel(boolean isXlsx,InputStream stream,int sheetAt) throws IOException {
+		if (!isXlsx) {
+			Sheet sheet = getSheet(false,stream, sheetAt);
+			return read2003Excel(sheet);
+		} else {
+			Sheet sheet = getSheet(true,stream, sheetAt);
+			return read2007Excel(sheet);
+		}
+	}
+	/**
+	 * 根据SheetName读取Excel内容
+	 */
 	public static List<List<Object>> readExcel(File file,String sheetName) throws IOException {
 		String fileName = file.getName();
 		String extension = fileName.lastIndexOf(".") == -1 ? "" : fileName
 				.substring(fileName.lastIndexOf(".") + 1);
 		if ("xls".equalsIgnoreCase(extension)) {
-			HSSFSheet sheet = getHSSFSheet(file, sheetName);
+			Sheet sheet = getSheet(false,file, sheetName);
 			return read2003Excel(sheet);
 		} else if ("xlsx".equalsIgnoreCase(extension)) {
-			XSSFSheet sheet = getXSSFSheet(file, sheetName);
+			Sheet sheet = getSheet(true,file, sheetName);
 			return read2007Excel(sheet);
 		} else {
 			throw new IOException("不支持的文件类型");
@@ -45,32 +71,52 @@ public class ExcelReaderUtil {
 		String fileName = file.getName();
 		String extension = fileName.lastIndexOf(".") == -1 ? "" : fileName
 				.substring(fileName.lastIndexOf(".") + 1);
-		if ("xls".equals(extension)) {
-			HSSFSheet sheet = getHSSFSheet(file, sheetAt);
+		if ("xls".equalsIgnoreCase(extension)) {
+			Sheet sheet = getSheet(false,file, sheetAt);
 			return read2003Excel(sheet);
-		} else if ("xlsx".equals(extension)) {
-			XSSFSheet sheet = getXSSFSheet(file, sheetAt);
+		} else if ("xlsx".equalsIgnoreCase(extension)) {
+			Sheet sheet = getSheet(true,file, sheetAt);
 			return read2007Excel(sheet);
 		} else {
 			throw new IOException("不支持的文件类型");
 		}
 	}
 	
-	private static HSSFSheet getHSSFSheet(File file,String sheetName) throws IOException{
-		HSSFWorkbook hwb = new HSSFWorkbook(new FileInputStream(file));
-		return hwb.getSheet(sheetName);
+	private static Sheet getSheet(boolean isXlsx,File file,String sheetName) throws IOException{
+		if(isXlsx){
+			XSSFWorkbook hwb = new XSSFWorkbook(new FileInputStream(file));
+			return hwb.getSheet(sheetName);
+		}else{
+			HSSFWorkbook hwb = new HSSFWorkbook(new FileInputStream(file));
+			return hwb.getSheet(sheetName);
+		}
 	}
-	private static HSSFSheet getHSSFSheet(File file,int sheetAt) throws IOException{
-		HSSFWorkbook hwb = new HSSFWorkbook(new FileInputStream(file));
-		return hwb.getSheetAt(sheetAt);
+	private static Sheet getSheet(boolean isXlsx,File file,int sheetAt) throws IOException{
+		if(isXlsx){
+			XSSFWorkbook hwb = new XSSFWorkbook(new FileInputStream(file));
+			return hwb.getSheetAt(sheetAt);
+		}else{
+			HSSFWorkbook hwb = new HSSFWorkbook(new FileInputStream(file));
+			return hwb.getSheetAt(sheetAt);
+		}
 	}
-	private static XSSFSheet getXSSFSheet(File file,String sheetName) throws IOException{
-		XSSFWorkbook hwb = new XSSFWorkbook(new FileInputStream(file));
-		return hwb.getSheet(sheetName);
+	private static Sheet getSheet(boolean isXlsx,InputStream stream,String sheetName) throws IOException{
+		if(isXlsx){
+			XSSFWorkbook hwb = new XSSFWorkbook(stream);
+			return hwb.getSheet(sheetName);
+		}else{
+			HSSFWorkbook hwb = new HSSFWorkbook(stream);
+			return hwb.getSheet(sheetName);
+		}
 	}
-	private static XSSFSheet getXSSFSheet(File file,int sheetAt) throws IOException{
-		XSSFWorkbook hwb = new XSSFWorkbook(new FileInputStream(file));
-		return hwb.getSheetAt(sheetAt);
+	private static Sheet getSheet(boolean isXlsx,InputStream stream,int sheetAt) throws IOException{
+		if(isXlsx){
+			XSSFWorkbook hwb = new XSSFWorkbook(stream);
+			return hwb.getSheetAt(sheetAt);
+		}else{
+			HSSFWorkbook hwb = new HSSFWorkbook(stream);
+			return hwb.getSheetAt(sheetAt);
+		}
 	}
 	
 	/**
@@ -79,10 +125,11 @@ public class ExcelReaderUtil {
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 */
-	private static List<List<Object>> read2003Excel(HSSFSheet sheet) throws IOException {
-		if(sheet == null){
+	private static List<List<Object>> read2003Excel(Sheet s) throws IOException {
+		if(s == null){
 			return null;
 		}
+		HSSFSheet sheet = (HSSFSheet) s;
 		List<List<Object>> list = new LinkedList<List<Object>>();
 		Object value = null;
 		HSSFRow row = null;
@@ -151,10 +198,11 @@ public class ExcelReaderUtil {
 	 * 读取Office 2007 excel
 	 */
 
-	private static List<List<Object>> read2007Excel(XSSFSheet sheet) throws IOException {
-		if(sheet == null){
+	private static List<List<Object>> read2007Excel(Sheet s) throws IOException {
+		if(s == null){
 			return null;
 		}
+		XSSFSheet sheet = (XSSFSheet) s;
 		List<List<Object>> list = new LinkedList<List<Object>>();
 		Object value = null;
 		XSSFRow row = null;
