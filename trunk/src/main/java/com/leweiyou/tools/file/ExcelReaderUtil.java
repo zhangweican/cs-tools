@@ -143,6 +143,8 @@ public class ExcelReaderUtil {
 			for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
 				cell = row.getCell(j);
 				if (cell == null) {
+					//TODO 为了解决合并单元格问题，合并单元格，返回空，占位
+					linked.add(null);
 					continue;
 				}
 				DecimalFormat df = new DecimalFormat("0");// 格式化 number String
@@ -217,6 +219,8 @@ public class ExcelReaderUtil {
 			for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
 				cell = row.getCell(j);
 				if (cell == null) {
+					//TODO 为了解决合并单元格问题，合并单元格，返回空，占位
+					linked.add(null);
 					continue;
 				}
 				DecimalFormat df = new DecimalFormat("0");// 格式化 number String
