@@ -147,39 +147,31 @@ public class ExcelReaderUtil {
 				}
 				DecimalFormat df = new DecimalFormat("0");// 格式化 number String
 				// 字符
-				SimpleDateFormat sdf = new SimpleDateFormat(
-						"yyyy-MM-dd HH:mm:ss");// 格式化日期字符串
-				DecimalFormat nf = new DecimalFormat("0.00");// 格式化数字
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化日期字符串
+				//DecimalFormat nf = new DecimalFormat("0.00");// 格式化数字
 				switch (cell.getCellType()) {
 				case XSSFCell.CELL_TYPE_STRING:
-					// i + "行" + j + " 列 is String type");
 					value = cell.getStringCellValue();
 					break;
 				case XSSFCell.CELL_TYPE_NUMERIC:
-					// i + "行" + j
-					// + " 列 is Number type ; DateFormt:"
-					// + cell.getCellStyle().getDataFormatString());
 					if ("@".equals(cell.getCellStyle().getDataFormatString())) {
 						value = df.format(cell.getNumericCellValue());
 
-					} else if ("General".equals(cell.getCellStyle()
-							.getDataFormatString())) {
-						value = nf.format(cell.getNumericCellValue());
+					} else if ("General".equals(cell.getCellStyle().getDataFormatString())) {
+						Double d = cell.getNumericCellValue();  
+						DecimalFormat dff = new DecimalFormat("#.##");  
+						value = dff.format(d);
 					} else {
-						value = sdf.format(HSSFDateUtil.getJavaDate(cell
-								.getNumericCellValue()));
+						value = sdf.format(HSSFDateUtil.getJavaDate(cell.getNumericCellValue()));
 					}
 					break;
 				case XSSFCell.CELL_TYPE_BOOLEAN:
-					// i + "行" + j + " 列 is Boolean type");
 					value = cell.getBooleanCellValue();
 					break;
 				case XSSFCell.CELL_TYPE_BLANK:
-					// i + "行" + j + " 列 is Blank type");
 					value = "";
 					break;
 				default:
-					// i + "行" + j + " 列 is default type");
 					value = cell.toString();
 				}
 				linked.add(value);
@@ -218,41 +210,32 @@ public class ExcelReaderUtil {
 				}
 				DecimalFormat df = new DecimalFormat("0");// 格式化 number String
 				// 字符
-				SimpleDateFormat sdf = new SimpleDateFormat(
-						"yyyy-MM-dd HH:mm:ss");// 格式化日期字符串
-				DecimalFormat nf = new DecimalFormat("0.00");// 格式化数字
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化日期字符串
+				//DecimalFormat nf = new DecimalFormat("0.00");// 格式化数字
 
 				switch (cell.getCellType()) {
 				case XSSFCell.CELL_TYPE_STRING:
-					// i + "行" + j + " 列 is String type");
 					value = cell.getStringCellValue();
 					break;
 				case XSSFCell.CELL_TYPE_NUMERIC:
-					// i + "行" + j
-					// + " 列 is Number type ; DateFormt:"
-					// + cell.getCellStyle().getDataFormatString());
 					if ("@".equals(cell.getCellStyle().getDataFormatString())) {
 						value = df.format(cell.getNumericCellValue());
 
-					} else if ("General".equals(cell.getCellStyle()
-							.getDataFormatString())) {
-						value = nf.format(cell.getNumericCellValue());
+					} else if ("General".equals(cell.getCellStyle().getDataFormatString())) {
+						Double d = cell.getNumericCellValue();  
+						DecimalFormat dff = new DecimalFormat("#.##");  
+						value = dff.format(d);  
 					} else {
-						value = sdf.format(HSSFDateUtil.getJavaDate(cell
-								.getNumericCellValue()));
+						value = sdf.format(HSSFDateUtil.getJavaDate(cell.getNumericCellValue()));
 					}
 					break;
 				case XSSFCell.CELL_TYPE_BOOLEAN:
-					// i + "行" + j + " 列 is Boolean type");
 					value = cell.getBooleanCellValue();
 					break;
 				case XSSFCell.CELL_TYPE_BLANK:
-					// i + "行" + j + " 列 is Blank type");
 					value = "";
-					// value);
 					break;
 				default:
-					// i + "行" + j + " 列 is default type");
 					value = cell.toString();
 				}
 				
