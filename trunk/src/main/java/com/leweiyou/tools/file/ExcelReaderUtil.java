@@ -182,9 +182,6 @@ public class ExcelReaderUtil {
 					// i + "行" + j + " 列 is default type");
 					value = cell.toString();
 				}
-				if (value == null || "".equals(value)) {
-					continue;
-				}
 				linked.add(value);
 
 			}
@@ -258,9 +255,7 @@ public class ExcelReaderUtil {
 					// i + "行" + j + " 列 is default type");
 					value = cell.toString();
 				}
-				if (value == null || "".equals(value)) {
-					continue;
-				}
+				
 				linked.add(value);
 			}
 			list.add(linked);
@@ -271,7 +266,7 @@ public class ExcelReaderUtil {
 	public static void main(String[] args) {
 		List list;
 		try {
-			list = ExcelReaderUtil.readExcel(new File("E:\\document\\项目相关\\IDC华南-广佛带宽机位盘点V3.xls"),1);
+			list = ExcelReaderUtil.readExcel(new File("E:\\document\\项目相关\\设备导入模板2.xls"),"网络设备");
 			System.out.println(list.size());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
