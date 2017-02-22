@@ -84,6 +84,13 @@ public class PageData extends HashMap implements Map{
 		}
 		return Integer.valueOf(str);
 	}
+	public Long getLong(Object key) {
+		String str = getString(key);
+		if(StringUtils.isEmpty(str)){
+			return null;
+		}
+		return Long.valueOf(str);
+	}
 	public Float getFloat(Object key) {
 		String str = getString(key);
 		if(StringUtils.isEmpty(str)){
