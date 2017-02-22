@@ -159,7 +159,7 @@ public class ExcelReaderUtil {
 
 					} else if ("General".equals(cell.getCellStyle().getDataFormatString())) {
 						Double d = cell.getNumericCellValue();  
-						DecimalFormat dff = new DecimalFormat("#.##");  
+						DecimalFormat dff = new DecimalFormat("#.###########");  
 						value = dff.format(d);
 					} else {
 						value = sdf.format(HSSFDateUtil.getJavaDate(cell.getNumericCellValue()));
@@ -223,7 +223,7 @@ public class ExcelReaderUtil {
 
 					} else if ("General".equals(cell.getCellStyle().getDataFormatString())) {
 						Double d = cell.getNumericCellValue();  
-						DecimalFormat dff = new DecimalFormat("#.##");  
+						DecimalFormat dff = new DecimalFormat("#.#########");  
 						value = dff.format(d);  
 					} else {
 						value = sdf.format(HSSFDateUtil.getJavaDate(cell.getNumericCellValue()));
