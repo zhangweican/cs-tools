@@ -143,6 +143,7 @@ public class ExcelReaderUtil {
 			for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
 				cell = row.getCell(j);
 				if (cell == null) {
+					linked.add(null);
 					continue;
 				}
 				DecimalFormat df = new DecimalFormat("0");// 格式化 number String
@@ -206,6 +207,7 @@ public class ExcelReaderUtil {
 			for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
 				cell = row.getCell(j);
 				if (cell == null) {
+					linked.add(null);
 					continue;
 				}
 				DecimalFormat df = new DecimalFormat("0");// 格式化 number String
