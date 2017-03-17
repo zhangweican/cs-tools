@@ -128,7 +128,8 @@ public class DateUtil {
 	public static long getSpanSeconds(Date startTime,Date endTime){ 
 		return endTime.getTime() - startTime.getTime();
 	} 
-	
+	public static Date getCurrentTime()   { return Calendar.getInstance().getTime();}
+	public static long getCurrentTimeInMillis()   { return Calendar.getInstance().getTimeInMillis();}
 	/** 取得当前年、月、日、小时、分、秒等数值**/
 	public static int getCurrentYear()   { return Calendar.getInstance().get(Calendar.YEAR);}
 	public static int getCurrentMonth()  { return Calendar.getInstance().get(Calendar.MONTH);}
@@ -139,6 +140,37 @@ public class DateUtil {
 	public static int getCurrentSecond() { return Calendar.getInstance().get(Calendar.SECOND);}
 	
 
+	/////////////////////////////////////////////////////////////////////////////////////
+	//----------------------------  日期计算    ---------------------------------//  
+	/////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * 计算日期间隔的天数
+	 * 
+	 * @param beginDate   开始日期
+	 * @param endDate     结束日期
+	 * @return
+	 * @pre beginDate != null
+	 */
+	public static int daysBetweenDates(Date beginDate, Date endDate) {
+		int days = 0;
+		Calendar calo = Calendar.getInstance();
+		Calendar caln = Calendar.getInstance();
+		calo.setTime(beginDate);
+		caln.setTime(endDate);
+		int oday = calo.get(6);
+		int nyear = caln.get(1);
+		for (int oyear = calo.get(1); nyear > oyear;) {
+			calo.set(2, 11);
+			calo.set(5, 31);
+			days += calo.get(6);
+			oyear++;
+			calo.set(1, oyear);
+		}
+
+		int nday = caln.get(6);
+		days = (days + nday) - oday;
+		return days;
+	}
 	/////////////////////////////////////////////////////////////////////////////////////
 	//----------------------------  日期类型之间的转换    ---------------------------------//  
 	/////////////////////////////////////////////////////////////////////////////////////
