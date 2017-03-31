@@ -43,7 +43,7 @@ public class PageData extends HashMap implements Map{
 			}else if(valueObj instanceof String[]){ 
 				String[] values = (String[])valueObj;
 				for(int i=0;i<values.length;i++){ 
-					 value = values[i] + ",";
+					 value += values[i] + ",";
 				}
 				value = value.substring(0, value.length()-1); 
 			}else{
