@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+
+import com.leweiyou.tools.date.DateUtil;
 
 /**
  * Request的页面参数类
@@ -68,7 +71,34 @@ public class PageData extends HashMap implements Map{
 		}
 		return obj;
 	}
-	
+	public Byte getByte(Object key) {
+		Object o = get(key);
+		if(o == null){
+			return null;
+		}
+		return Byte.valueOf(String.valueOf(get(key)));
+	}
+	/**
+	 * 获取日期，日期格式化：yyyy-MM-dd HH:mm:ss
+	 * @param key
+	 * @return
+	 */
+	public Date getDateByDefault(Object key) {
+		Object o = get(key);
+		if(o == null){
+			return null;
+		}
+		String value = String.valueOf(get(key));
+		return DateUtil.toDate(value, DateUtil.yyyy_MM_dd_HH_mm_ss);
+	}
+	public Date getDate(Object key,String format) {
+		Object o = get(key);
+		if(o == null){
+			return null;
+		}
+		String value = String.valueOf(get(key));
+		return DateUtil.toDate(value, format);
+	}
 	public String getString(Object key) {
 		Object o = get(key);
 		if(o == null){
