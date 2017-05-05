@@ -6,14 +6,13 @@ import java.util.Map;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.commons.lang.StringUtils;
-
-import com.leweiyou.tools.log.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * 加载环境配置文件信息
  */
 public class EnvUtil {
-	private static Logger logger = new Logger(EnvUtil.class);
+	private static Logger logger = Logger.getLogger(EnvUtil.class);
 	public static PropertiesConfiguration env = new PropertiesConfiguration();
 	static {
 		try {

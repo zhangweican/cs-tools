@@ -2,7 +2,7 @@ package com.leweiyou.tools.cfg;
 
 import java.io.File;
 
-import com.leweiyou.tools.log.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * 配置文件路径读取顺序<br>
@@ -18,9 +18,9 @@ import com.leweiyou.tools.log.Logger;
  *
  */
 public class CfgPath {
-	static Logger logger = new Logger(CfgPath.class);
-	private static String cfgPath=_getCfgPath("cfg.path","appcfg");
-	private static String logPath=_getLogPath("log4j.dir");
+	static Logger logger = Logger.getLogger(CfgPath.class);
+	private static String cfgPath = _getCfgPath("cfg.path","appcfg");
+	private static String logPath = _getLogPath("log4j.dir");
 	
 	public static String getCfgPathRoot(){
 		return cfgPath;

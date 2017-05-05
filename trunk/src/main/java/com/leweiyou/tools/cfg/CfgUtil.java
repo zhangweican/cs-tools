@@ -10,8 +10,8 @@ import java.util.Map;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
+import org.apache.log4j.Logger;
 
-import com.leweiyou.tools.log.Logger;
 
 /**
 * 【注意：】 因为配置文件默认先查找服务容器下的配置文件，如果查找不到才去classpath下查找。所以定义配置文件的时候，最好定义唯一的配置文件，如添加项目名称的前缀<br/>
@@ -26,7 +26,7 @@ import com.leweiyou.tools.log.Logger;
 *     {当前项目classes路径}/filename，建议设置cfg.path值设定配置文件绝对路径   
 */
 public class CfgUtil {
-	static Logger logger = new Logger(CfgUtil.class);
+	static Logger logger = Logger.getLogger(CfgUtil.class);
 	private static Map<String,CfgData> cfgs=new HashMap<String,CfgData>();
 	private static Object lock=new Object();	
 	 

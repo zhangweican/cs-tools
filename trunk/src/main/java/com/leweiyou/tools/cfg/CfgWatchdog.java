@@ -6,9 +6,10 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 public abstract class CfgWatchdog extends Thread {
-    private static Log logger = LogFactory.getLog(CfgWatchdog.class);
+    private static Logger logger = Logger.getLogger(CfgWatchdog.class);
     public static Map<String,CfgInfo> watchArray = new java.util.concurrent.ConcurrentHashMap<String,CfgInfo>();
     
     public static final long DEFAULT_DELAY = 10000L;

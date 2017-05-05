@@ -3,11 +3,12 @@ package com.leweiyou.tools.cfg;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.leweiyou.tools.log.Logger;
+import org.apache.log4j.Logger;
+
 import com.leweiyou.tools.utils.IOUtils;
 
 public class EnvTools {
-	private static Logger logger = new Logger(EnvTools.class);
+	private static Logger logger = Logger.getLogger(EnvTools.class);
 	
 	/**
 	 * 字符串中的环境变量替换
