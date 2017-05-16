@@ -70,9 +70,9 @@ public class EnvUtil {
 				envpath = path + "../classes" + File.separator + "env.cfg";			
 				logger.info("Load env.cfg from dev path: " + envpath);
 			}
-			if(new File(envpath).exists()==false){
-				throw new RuntimeException("File env.cfg not found!");
-			}
+		}
+		if(new File(envpath).exists() == false){
+			throw new RuntimeException("File env.cfg not found!");
 		}
 		return envpath;
 	}
