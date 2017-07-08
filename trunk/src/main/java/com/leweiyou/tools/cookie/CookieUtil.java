@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CookieUtil {
 
-	// 设置cookie默认有效期是2小时
-	private final static int cookieDefaultAge = 360;
-	
+	// 设置cookie默认有效期是1天
+	private final static int cookieDefaultAge = 24 * 60 * 60;
+
 	/**
-	 * 保存必要信息到cookie
+	 * 保存必要信息到cookie(默认保存一天)
 	 * @param cookieName 要保存的cookie名字
 	 * @param domainName 要保存的cookie的domain名字
 	 * @param cookieInfo 要保存的cookie内容
@@ -23,6 +23,22 @@ public class CookieUtil {
 	public static void saveCookie(String cookieName,
 			String domainName,
 			String cookieInfo,
+			HttpServletResponse response) {
+		saveCookie(cookieName, domainName, cookieInfo, cookieDefaultAge,response);
+	}	
+	
+	/**
+	 * 保存必要信息到cookie
+	 * @param cookieName 要保存的cookie名字
+	 * @param domainName 要保存的cookie的domain名字
+	 * @param cookieInfo 要保存的cookie内容
+	 * @param seconds 要保存的最大时间
+	 * @param response
+	 */
+	public static void saveCookie(String cookieName,
+			String domainName,
+			String cookieInfo,
+			int seconds,
 			HttpServletResponse response) {
 
 		// 加密Cookie信息
