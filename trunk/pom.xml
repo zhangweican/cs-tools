@@ -12,13 +12,13 @@
         <repository>  
             <id>releases</id>  
             <name>User Project Release</name>  
-            <url>http://172.28.11.133:9070/nexus/content/repositories/releases</url>  
+            <url>http://172.28.13.31:9070/nexus/content/repositories/releases</url>  
         </repository>  
   
         <snapshotRepository>  
             <id>snapshots</id>  
             <name>User Project SNAPSHOTS</name>  
-            <url>http://172.28.11.133:9070/nexus/content/repositories/snapshots</url>  
+            <url>http://172.28.13.31:9070/nexus/content/repositories/snapshots</url>  
         </snapshotRepository>  
 	</distributionManagement> 
 	    
