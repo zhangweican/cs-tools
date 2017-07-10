@@ -140,6 +140,12 @@ public class ExcelReaderUtil {
 				continue;
 			}
 			List<Object> linked = new LinkedList<Object>();
+			//处理Excel当前面没有没有值时候，返回的起始列号不是从零开始
+			if(row.getFirstCellNum() != 0){
+				for(int j = 0 ;j < row.getFirstCellNum(); j++){
+					linked.add(null);
+				}
+			}
 			for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
 				cell = row.getCell(j);
 				if (cell == null) {
@@ -204,6 +210,12 @@ public class ExcelReaderUtil {
 				continue;
 			}
 			List<Object> linked = new LinkedList<Object>();
+			//处理Excel当前面没有没有值时候，返回的起始列号不是从零开始
+			if(row.getFirstCellNum() != 0){
+				for(int j = 0 ;j < row.getFirstCellNum(); j++){
+					linked.add(null);
+				}
+			}
 			for (int j = row.getFirstCellNum(); j <= row.getLastCellNum(); j++) {
 				cell = row.getCell(j);
 				if (cell == null) {
