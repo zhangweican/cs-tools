@@ -14,24 +14,11 @@ import org.apache.log4j.Logger;
 public class EnvUtil {
 	private static Logger logger = Logger.getLogger(EnvUtil.class);
 	public static PropertiesConfiguration env = new PropertiesConfiguration();
+	private static String envFilePath = null;
 	static {
 		try {
-			// //必须确认设定的全局配置文件
-			// Map<String,String> em=System.getenv();
-			// String envpath = em.get("CS_PATH_ENV_CFG");
-			// if(envpath!=null){
-			// logger.info("Load env.cfg from system env: "+envpath);
-			// }else{
-			// envpath=CfgPath.getCfgPathRoot()+ File.separator + "env.cfg";
-			// if(new File(envpath).exists()){
-			// logger.info("Load env.cfg from app path: "+envpath);
-			// }else{
-			// envpath="../../cs-config/trunk/development/env.cfg";
-			//
-			// logger.info("Load env.cfg from dev path: "+envpath);
-			// }
-			// }
-			File envFile = new File(getEnvFilePath());
+			envFilePath = getEnvFilePath();
+			File envFile = new File(envFilePath);
 			if (envFile.exists() && envFile.isFile()) {
 				env = new PropertiesConfiguration();
 				env.setEncoding("utf-8");
@@ -49,7 +36,9 @@ public class EnvUtil {
 
 	public static String getEnvFilePath() {
 		// 必须确认设定的全局配置文件
-		
+		if(envFilePath != null){
+			return envFilePath;
+		}
 		String envpath = CfgPath.getCfgPathRoot() + File.separator + "env.cfg";
 		if (new File(envpath).exists()) {
 			logger.info("Load env.cfg from app path: " + envpath);
