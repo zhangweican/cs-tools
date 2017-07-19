@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
  *
  */
 public class CfgPath {
-	static Logger logger = Logger.getLogger(CfgPath.class);
 	private static String cfgPath = _getCfgPath("cfg.path","appcfg");
 	private static String logPath = _getLogPath("log4j.dir");
 	
