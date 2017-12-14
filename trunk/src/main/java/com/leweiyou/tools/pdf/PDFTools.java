@@ -51,8 +51,15 @@ public class PDFTools {
 	
 	/**
 	 * 设置字体，因为在jar里面设置字体ITextRenderer.getFontResolver().addFont()不能访问jar里面的font字体，所以这里就设置<br><br>
-	 * 注：<font color=red>如果需要设置中文字体可以使用arialuni.ttf字体</font>
-	 * @param fontFile
+	 * 注：<font color=red>如果需要设置中文字体 保证这里使用的字体在freemarker的模板里使用的字体一致，否则中文还是显示不出来。</font>
+	 * 如如下css样式,可以使用arialuni.ttf字体
+			body {
+				margin-left: 45px;
+				margin-right: 45px;
+				font-family: Arial Unicode MS;
+				font-size: 10px;
+			}
+	 * 
 	 */
 	public static void setFont(Set<File> fontFile){
 		if(CollectionUtils.isNotEmpty(fontFile)){
