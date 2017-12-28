@@ -107,6 +107,49 @@ public class ExcelWriteUtil {
 	}
 	
 	/**
+	 * 创建Excel文件,支持写多个sheet，并保存
+	 * 
+	 * @param fileName
+	 *            文件名称
+	 * @param excelHeads
+	 *            头内容
+	 * @param voList
+	 *            主体内容
+	 * @throws Exception
+	 */
+	public static void exportExcelMoreSheet(OutputStream stream, String title,String[] headNames, String[] voFieldNames, Map<String,List> voListMap) throws Exception {
+		// 验证数据有效性
+		if (stream == null)
+			throw new Exception("error.export.excel.stream");
+		if (null == voFieldNames || voFieldNames.length < 1)
+			throw new Exception("error.export.excel.file");
+		if (null == headNames || headNames.length < 1)
+			throw new Exception("error.export.excel.file");
+		if (null == voListMap || voListMap.size() < 1)
+			throw new Exception("error.export.excel.file");
+		
+		try {
+			// 创建XLS文档
+			HSSFWorkbook document = new HSSFWorkbook();
+			for(Map.Entry<String,List> entry:voListMap.entrySet()){
+				// 创建Sheet
+				HSSFSheet sheet = document.createSheet(entry.getKey());
+				
+				creatExcelHeader(title,headNames, sheet);
+				
+				createExcelBody(voFieldNames,entry.getValue(), sheet);
+				
+			}
+			document.write(stream);
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("error.export.excel.file");
+		}
+	}
+	
+	
+	/**
 	 * 创建ExcelHSSFWorkbook，用于页面输出
 	 * 
 	 * @param title          Excel文件名称
