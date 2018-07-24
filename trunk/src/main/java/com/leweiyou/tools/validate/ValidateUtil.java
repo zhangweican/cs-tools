@@ -16,6 +16,13 @@ public class ValidateUtil {
 			return true;
 		return false;
 	}	
+	
+	public static boolean isBlank(Long value) {
+		if (value == null || value.equals(0L))
+			return true;
+		return false;
+	}
+	
 	public static boolean isBlank(Integer value) {
 		if (value == null || FormatUtil.toInt(value) == 0)
 			return true;
