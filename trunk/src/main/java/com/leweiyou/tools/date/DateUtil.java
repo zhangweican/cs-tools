@@ -50,6 +50,7 @@ public class DateUtil {
 	 
 	//反斜杠日期格式
 	public static String YYYYsMMsDD            = "yyyy/MM/dd"; 
+	public static String YYYYsMMsDDsHHsmm      = "yyyy/MM/dd HH:mm";
 	public static String MMsDDsYYYY            = "MM/dd/yyyy"; 
 	public static String DDsMMsYYYY            = "dd/MM/yyyy"; 
 
@@ -65,19 +66,21 @@ public class DateUtil {
 	public static String ddMMMyy   = "ddMMMyy";     //01Jan09
 	public static String ddMMMyyyy = "ddMMMyyyy";   //01Jan2009 
 	
-	/*获取当天0点0分*/
+	/*获取当天0点0分0秒*/
 	public static Date getMorning(Date date){
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE), 0, 0,0);
+		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+				calendar.get(Calendar.DATE), 0, 0, 0);
 		return calendar.getTime();
 	}
 	
-	/*获取当天23点59分*/
+	/*获取当天23点59分59秒*/
 	public static Date getNight(Date date){
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE), 23, 59,59);
+		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+				calendar.get(Calendar.DATE), 23, 59, 59);
 		return calendar.getTime();
 	}
 
