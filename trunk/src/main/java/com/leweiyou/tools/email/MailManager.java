@@ -21,6 +21,8 @@
  */
 package com.leweiyou.tools.email;
 
+import java.io.File;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,16 +44,54 @@ import org.apache.commons.mail.MultiPartEmail;
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.log4j.Logger;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+
 public class MailManager{
     
 	protected transient final Logger log = Logger.getLogger(this.getClass().getName());
+	
+	/**
+	 * 发送带Freemarker格式的邮件
+	 * @param modelPath Freemarker模板位置
+	 * @param subject 标题
+	 * @param receiver 接收者邮箱地址，多个邮箱地址间用";"隔开
+	 * @param paramMap 填充Freemarker模板的数据
+	 */
+	public void sendSimpleEmailWithFreemarker(String modelPath, String subject, String receiver, Map<String, Object> paramMap) throws Exception{
+		/*
+		 * 内容:利用Freemarker将获取特定格式的动态页面
+		 */
+		String msgContent = null;
+		
+		File ftlFile = new File(modelPath);
+		String templatePath = ftlFile.getParent();
+		
+		//获取Freemarker配置
+		freemarker.template.Version version = new freemarker.template.Version("2.3.22");  
+        Configuration config = new Configuration(version);  
+        config.setDirectoryForTemplateLoading(new File(templatePath));  
+        config.setEncoding(Locale.CHINA, "utf-8"); 
+        
+        //使用freemarker得到html内容
+        Template tpl = config.getTemplate(ftlFile.getName());  
+        tpl.setEncoding("UTF-8");          
+        StringWriter writer = new StringWriter(); 
+        
+        tpl.process(paramMap, writer);  
+        writer.flush();  
+        msgContent = writer.toString(); 				
+		
+		sendHtmlEmail(subject,msgContent,msgContent,null,receiver);
+		
+	}
     
     /**
      * 简单邮件发送
      * 
      * @param subject     邮件主题
      * @param msgContent  邮件内容
-     * @param receiver    收信人，如果为空，则直接从配置文件中取得收信人信息，可群发比如"hujq@cares.sh.cn,liuke@cares.sh.cn"
+     * @param receiver    收信人，如果为空，则直接从配置文件中取得收信人信息，可群发比如"hujq@cares.sh.cn;liuke@cares.sh.cn"
      */
     public void sendSimpleEmail(String subject,String msgContent,String receiver)throws Exception{
          
@@ -79,7 +119,7 @@ public class MailManager{
      * @param msgContent
      *            邮件内容
      * @param receiver
-     *            收件人，为空时直接从配置文件中读取邮件人信息，可群发比如"hujq@cares.sh.cn,liuke@cares.sh.cn"
+     *            收件人，为空时直接从配置文件中读取邮件人信息，可群发比如"hujq@cares.sh.cn;liuke@cares.sh.cn"
      * @param attachName
      *            附件文件名称（需要在邮件中显示的名称）
      * @param attachUrl
@@ -152,7 +192,7 @@ public class MailManager{
      * @param msgContent
      *            邮件内容
      * @param receiver
-     *            收件人，为空时直接从配置文件中读取邮件人信息，可群发比如"hujq@cares.sh.cn,liuke@cares.sh.cn"
+     *            收件人，为空时直接从配置文件中读取邮件人信息，可群发比如"hujq@cares.sh.cn;liuke@cares.sh.cn"
      * @param attachsMap
      * 			附件名为key，附件路径为value
      */
@@ -247,7 +287,7 @@ public class MailManager{
      * 根据收件人字符串，分析出邮箱地址列表，以List<InternetAddress>形式返回
      * 
      * @param recipients
-     *            邮箱地址字符串，比如"hujq@cares.sh.cn,liuke@cares.sh.cn"
+     *            邮箱地址字符串，比如"hujq@cares.sh.cn;liuke@cares.sh.cn"
      * @return List<InternetAddress>
      */
     public Collection getRecipients(String recipients){
@@ -270,7 +310,7 @@ public class MailManager{
      * 
      * @param subject     邮件主题
      * @param msgContent  邮件内容
-     * @param receiver    收信人，如果为空，则直接从配置文件中取得收信人信息，可群发比如"hujq@cares.sh.cn,liuke@cares.sh.cn"
+     * @param receiver    收信人，如果为空，则直接从配置文件中取得收信人信息，可群发比如"hujq@cares.sh.cn;liuke@cares.sh.cn"
      * @param locale      国际化内容
      */
     public void sendSimpleEmail(String subject,String msgContent,String receiver, Locale locale)throws Exception{
@@ -307,7 +347,7 @@ public class MailManager{
      * @param msgContent
      *            邮件内容
      * @param receiver
-     *            收件人，为空时直接从配置文件中读取邮件人信息，可群发比如"hujq@cares.sh.cn,liuke@cares.sh.cn"
+     *            收件人，为空时直接从配置文件中读取邮件人信息，可群发比如"hujq@cares.sh.cn;liuke@cares.sh.cn"
      * @param attachName
      *            附件文件名称（需要在邮件中显示的名称）
      * @param attachUrl
