@@ -43,6 +43,7 @@ public class DateUtil {
 	public static String yyyyMMddHHmmssS  = "yyyyMMddHHmmssS";
 
 	//中划线日期格式
+	public static String yyyy_MM               = "yyyy-MM";
 	public static String yyyy_MM_dd            = "yyyy-MM-dd"; 
 	public static String yyyy_MM_dd_HH_mm      = "yyyy-MM-dd HH:mm"; 
 	public static String yyyy_MM_dd_HH_mm_ss   = "yyyy-MM-dd HH:mm:ss"; 
