@@ -60,6 +60,10 @@ public class PageData extends HashMap implements Map{
 		map = new HashMap();
 	}
 	
+	public PageData(@SuppressWarnings("rawtypes") Map data) {
+		map = data;
+	}
+	
 	@Override
 	public Object get(Object key) {
 		Object obj = null;
