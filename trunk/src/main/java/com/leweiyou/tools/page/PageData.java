@@ -138,6 +138,13 @@ public class PageData extends HashMap implements Map{
 		}
 		return Double.valueOf(str);
 	}
+	public boolean getBoolean(Object key) {
+		String str = getString(key);
+		if(StringUtils.isEmpty(str)){
+			return false;
+		}
+		return Boolean.valueOf(str);
+	}
 	public ArrayList getList(Object key) {
 		String str = getString(key);
 		if(StringUtils.isEmpty(str)){
