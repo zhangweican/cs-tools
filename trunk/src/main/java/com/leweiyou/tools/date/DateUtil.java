@@ -67,6 +67,38 @@ public class DateUtil {
 	public static String ddMMMyy   = "ddMMMyy";     //01Jan09
 	public static String ddMMMyyyy = "ddMMMyyyy";   //01Jan2009 
 	
+	/*获取当周第一天凌晨0点0分0秒*/
+	public static Date getFirstDayOfWeek(Date date){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set(Calendar.DAY_OF_WEEK, calendar.getActualMinimum(Calendar.DAY_OF_WEEK));
+		return getMorning(calendar.getTime());
+	}
+	
+	/*获取当周最后一天的23点59分59秒*/
+	public static Date getLaseDayOfWeek(Date date){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set(Calendar.DAY_OF_WEEK, calendar.getActualMaximum(Calendar.DAY_OF_WEEK));
+		return getNight(calendar.getTime());
+	}
+	
+	/*获取当月第一天凌晨0点0分0秒*/
+	public static Date getFirstDayOfMonth(Date date){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		return getMorning(calendar.getTime());
+	}
+	
+	/*获取当月最后一天的23点59分59秒*/
+	public static Date getLaseDayOfMonth(Date date){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		return getNight(calendar.getTime());
+	}
+	
 	/*获取当天0点0分0秒*/
 	public static Date getMorning(Date date){
 		Calendar calendar = Calendar.getInstance();
