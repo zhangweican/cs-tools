@@ -56,7 +56,7 @@ public class EnvUtil {
 			
 			if (envpath == null) {
 				String path = EnvUtil.class.getResource("/").getPath();
-				envpath = path + "../classes" + File.separator + "env.cfg";			
+				envpath = path + File.separator + "env.cfg";			
 				logger.info("Load env.cfg from dev path: " + envpath);
 			}
 		}
